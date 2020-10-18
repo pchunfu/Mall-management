@@ -41,11 +41,11 @@ willAdd(){
     this.info.isAdd=true;
 },
 //编辑
-edit(id){
+edit(uid){
     this.info.isshow=true;
     this.info.isAdd=false;
     //让add发起详情请求
-    this.$refs.add.look(id)
+    this.$refs.add.look(uid)
 }
 
 },

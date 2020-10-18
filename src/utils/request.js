@@ -3,7 +3,7 @@ import axios from "axios"
 import qs from "qs"
 import Vue from "vue"
 import store from "../store"
-import {warningAlert} from "./alert"
+import { warningAlert } from "./alert"
 import router from "../router"
 
 //开发环境下使用
@@ -31,13 +31,13 @@ axios.interceptors.response.use(res => {
     console.group("=====本次请求路径是:" + res.config.url)
     console.log(res);
     console.groupEnd()
-     
+
     //用户掉线了
 
-    //  if(res.data.msg=="登录已过期或访问权限受限"){
-    //      warningAlert(res.data.msg)
-    //      router.push("/login")
-    //  }
+     if(res.data.msg=="登录已过期或访问权限受限"){
+         warningAlert(res.data.msg)
+         router.push("/login")
+     }
     return res;
 })
 
@@ -352,11 +352,11 @@ export const reqGoodsList = (params) => {
 }
 //详情
 
-export const reqGoodsDetail = (params) => {
+export const reqGoodsDetail = (id) => {
     return axios({
         url: baseUrl + "/api/goodsinfo",
         method: "get",
-        params: params
+        params: {id}
     })
 }
 
@@ -379,5 +379,138 @@ export const reqGoodsDel = (params) => {
         url: baseUrl + "/api/goodsdelete",
         method: "post",
         data: qs.stringify(params)
+    })
+}
+
+
+/*********会员管理***************/
+
+//列表
+export const reqMemberList = () => {
+    return axios({
+        url: baseUrl + "/api/memberlist",
+        method: "get",
+
+    })
+}
+
+
+//1条
+export const reqMemberDetail = (uid) => {
+    return axios({
+        url: baseUrl + "/api/memberinfo",
+        method: "get",
+        params: { uid }
+    })
+}
+
+//修改
+export const reqMemberUpdate = (params) => {
+    return axios({
+        url: baseUrl + "/api/memberedit",
+        method: "post",
+        data: qs.stringify(params)
+    })
+}
+
+
+/** * ***************轮播图*********************/
+// 轮播图添加
+export const bannerAdd = (form) => {
+    let data = new FormData()
+    for (let i in form) {
+        data.append(i, form[i])
+    }
+    return axios({
+        method: 'post',
+        url: baseUrl + '/api/banneradd',
+        data: data
+    })
+}
+// 轮播图修改
+export const reqBannerEdit = (form) => {
+    let data = new FormData()
+    for (let i in form) {
+        data.append(i, form[i])
+    }
+    return axios({
+        method: 'post',
+        url: baseUrl + '/api/banneredit',
+        data: data
+    })
+}
+// 轮播图列表
+export const bannerList = () => {
+    return axios({
+        method: 'get',
+        url: baseUrl + '/api/bannerlist'
+    })
+}
+// 轮播图获取（一条）
+export const bannerInfo = (id) => {
+    return axios({
+        method: 'get',
+        url: baseUrl + '/api/bannerinfo',
+        params: { id }
+    })
+}
+// 轮播图删除
+export const bannerDelete = (id) => {
+    return axios({
+        method: 'post',
+        url: baseUrl + '/api/bannerdelete',
+        data: { id }
+    })
+}
+/*********************秒杀管理**********************/
+
+// 限时秒杀添加
+
+export const reqSeckAdd = (params) => {
+    return axios({
+        url: baseUrl + '/api/seckadd',
+        method: 'post',
+        data: params,
+    })
+}
+
+
+// 限时秒杀列表 
+
+export const reqSeckList = () => {
+    return axios({
+        url: baseUrl + '/api/secklist',
+    })
+}
+
+
+// 限时秒杀获取一条
+export const reqSeckInfo = (id) => {
+    return axios({
+        url: baseUrl + '/api/seckinfo',
+        params: {
+            id,
+        }
+    })
+}
+
+// 限时秒杀修改 
+
+export const reqSeckEdit = (params) => {
+    return axios({
+        url: baseUrl + '/api/seckedit',
+        method: 'post',
+        data: params,
+    })
+}
+
+
+export const reqSeckDel = (id) => {
+    return axios({
+        url: baseUrl + '/api/seckdelete',
+        method: 'post',
+        data: {
+            id,
+        }
     })
 }
