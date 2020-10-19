@@ -22,8 +22,8 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="update">修 改</el-button>
+        <el-button @click="cancel" v-if="info.isAdd">取 消</el-button>
+        <el-button type="primary" @click="update" v-else>修 改</el-button>
       </div>
     </el-dialog>
   </div>
@@ -36,6 +36,7 @@ export default {
   props: ["info"],
   components: {},
   data() {
+      //正则
     return {
       form: {
         uid: "",
@@ -111,10 +112,7 @@ export default {
     },
   },
   mounted() {
-    //如果没有请求过角色管理的数据，就请求一次，如果请求过了，就不用请求了
-    //     if (this.roleList.length == 0) {
-    //       this.reqRoleListAction();
-    //     }
+   
   },
 };
 </script>

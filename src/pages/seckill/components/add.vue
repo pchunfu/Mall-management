@@ -20,7 +20,7 @@
           ></el-date-picker>
         </el-form-item>
       <el-form-item label="一级分类" prop="first_cateid">
-        <el-select v-model="form.first_cateid" @change="changeFirst">
+        <el-select v-model="form.first_cateid" @change="getSecondList">
           <el-option label="请选择" value="" disabled></el-option>
           <el-option
             v-for="item in cateList"
@@ -31,10 +31,10 @@
         </el-select>
       </el-form-item>
       <el-form-item label="二级分类" prop="second_cateid">
-        <el-select v-model="form.second_cateid" @change="changeSecond">
+        <el-select v-model="form.second_cateid" @change="getGoodsList">
           <el-option label="请选择" value="" disabled></el-option>
           <el-option
-            v-for="item in secondCateList"
+            v-for="item in secondList"
             :key="item.id"
             :label="item.catename"
             :value="item.id"
@@ -46,7 +46,7 @@
         <el-select v-model="form.goodsid">
           <el-option label="请选择" value="" disabled></el-option>
           <el-option
-            v-for="item in goodsList"
+            v-for="item in goodsList1"
             :key="item.id"
             :label="item.goodsname"
             :value="item.id"
@@ -96,9 +96,9 @@ export default {
         goodsid: ''
       },
       //请求回来的二级分类的list，自己命名为
-      secondCateList:[],
+       secondList: [],
       time:[],
-      // goodsList: [],
+      goodsList1: [],
     };
   },
   computed: {
@@ -129,17 +129,31 @@ export default {
       this.form.second_cateid = ''
      reqCateList({pid:this.form.first_cateid}).then(res=>{
        //二级list
-     this.secondCateList = res.data.list
+     this.secondList = res.data.list
      })
     },
    //二级分类修改，获取展示三级分类
-    changeSecond(){
-      //一级分类改变了，二级分类的值应该置空，跟着改变
-      this.form.goodsid = ''
-       this.reqGoodsList({
+      getSecondList() {
+      this.form.second_cateid = "";
+      this.secondList = [];
+      this.form.goodsid = "";
+      this.goodsList1 = [];
+      this.changeFirst();
+    },
+
+    getGoods() {
+      reqGoodsList({
         fid: this.form.first_cateid,
-        sid: this.form.second_cateid
-      })
+        sid: this.form.second_cateid,
+      }).then((res) => {
+        this.goodsList1 = res.data.list;
+      });
+    },
+    //三级分类应该置空
+     getGoodsList() {
+      this.form.goodsid = "";
+      this.goodsList1 = [];
+      this.getGoods();
     },
     //````````````````````````````````````````````
 
@@ -192,8 +206,8 @@ export default {
         goodsid: ''
       };
        this.time = "";
-      this.secondCateList = [];
-      // this.goodsList = [];
+      this.secondList = [];
+      this.goodsList1 = [];
     },
 
     //点击添加按钮
@@ -228,8 +242,8 @@ export default {
           //这个时候form是没有id的
           this.form = res.data.list;
           this.form.id = id;
-          changeFirst();
-          changeSecond();
+          this.changeFirst();
+          this.getGoods();
           this.time = [
           new Date(parseInt(this.form.begintime)),
           new Date(parseInt(this.form.endtime)),

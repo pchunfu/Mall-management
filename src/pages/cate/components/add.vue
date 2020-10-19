@@ -11,7 +11,7 @@
          <el-option v-for="item in list" :key="item.id" :label="item.catename" :value="item.id"></el-option> 
       </el-select>
     </el-form-item>
-    <el-form-item label="分类名称">
+    <el-form-item label="分类名称" prop='catename'>
       <el-input v-model="form.catename"></el-input>
     </el-form-item>
 
@@ -56,6 +56,11 @@ export default {
           img: null,
           status:1
       },
+       formRule: {
+        catename: [
+          {required: true, message: '请输入用户名称', trigger: 'blur'}
+        ]
+      }
     };
   },
   computed: {

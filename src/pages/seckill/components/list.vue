@@ -76,7 +76,7 @@ edit(id){
       },
 },
 mounted(){
- 
+ this.reqSeckList();
 },
 }
 </script>

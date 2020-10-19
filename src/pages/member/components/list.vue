@@ -7,7 +7,7 @@
     border
  
     :tree-props="{children: 'children'}">
-     <el-table-column prop="uid" label="用户编号" sortable width="180">
+     <el-table-column prop="id" label="用户编号" sortable width="180">
     </el-table-column>
     <el-table-column prop="nickname" label="昵称" sortable width="180">
     </el-table-column>
@@ -21,7 +21,7 @@
     </el-table-column>
     <el-table-column prop="status" label="操作">
      <template slot-scope="scope">
-        <el-button type="primary" @click="edit(scope.row.id)">编辑</el-button>
+        <el-button type="primary" @click="edit(scope.row.uid)">编辑</el-button>
        <!-- <del-btn @confirm="dele(scope.row.id)"></del-btn> -->
      </template>
     </el-table-column>
@@ -52,12 +52,12 @@ methods:{
   reqListAction:"member/reqListAction"
 }),
 //编辑
-edit(id) {
-      this.$emit("edit",id);
+edit(uid) {
+      this.$emit("edit",uid);
     },
 },
 mounted(){
-  this.reqListAction()
+  this.reqListAction();
 },
 }
 </script>
